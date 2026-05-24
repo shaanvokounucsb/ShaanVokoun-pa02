@@ -19,6 +19,7 @@
 #include <vector>
 #include <iomanip>
 #include "movies.h"
+#include "utilities.h"
 
 using namespace std;
 
@@ -98,7 +99,7 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
             cleanName += movieName[i];
         }
     }
-    movieName = trimAndLowerCase(cleanName);
+    movieName = trimAndLowercase(cleanName);
     size_t firstDigit = ratingStr.find_first_not_of(" \t\r\n");
     if (firstDigit != string::npos) {
         char ch = ratingStr[firstDigit];
