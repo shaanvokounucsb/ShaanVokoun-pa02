@@ -59,10 +59,10 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
         }
 
         if (matches.empty()) {
-            cout << "No movies found with prefix " << rawPrefix << endl;
+            cout << "No movies found with prefix " << prefix << endl;
             
             MovieTracker tracker;
-            tracker.prefix = rawPrefix;
+            tracker.prefix = prefix;
             tracker.found = false;
             summaryList.push_back(tracker);
             continue;
@@ -94,7 +94,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
         cout << endl;
 
         MovieTracker tracker;
-        tracker.prefix = rawPrefix;
+        tracker.prefix = prefix;
         tracker.title = matches[0].title;
         tracker.rating = matches[0].rating;
         tracker.found = true;
