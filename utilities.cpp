@@ -9,12 +9,25 @@ string trimAndLowercase(const string& str) {
     size_t last = str.find_last_not_of(" \t\r\n");
     string trimmed = str.substr(first, (last - first + 1));
     
+    string result = "";
+    bool lastWasSpace = false;
+
     for (size_t i = 0; i < trimmed.length(); ++i) {
-        if (trimmed[i] >= 'A' && trimmed[i] <= 'Z') {
-            trimmed[i] = trimmed[i] + 32;
+        char ch = trimmed[i];
+
+        if (ch == ' ' || ch == '/t'){
+            if (!lastWasSpace){
+                result += '';
+                lastWasSpace = true
+            }
+            else {
+                result += ch;
+                lastWasSpace = false;
+            }
         }
+        
     }
-    return trimmed;
+    return result;
 }
 
 string cleanPrefixOnly(const string& str) {
