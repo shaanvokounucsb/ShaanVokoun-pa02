@@ -15,7 +15,7 @@ string trimAndLowercase(const string& str) {
     for (size_t i = 0; i < trimmed.length(); ++i) {
         char ch = trimmed[i];
 
-        if (ch == ' ' || ch == '/t'){
+        if (ch == ' ' || ch == '\t'){
             if (!lastWasSpace){
                 result += ' ';
                 lastWasSpace = true;
