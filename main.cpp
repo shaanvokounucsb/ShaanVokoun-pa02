@@ -98,7 +98,7 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
             cleanName += movieName[i];
         }
     }
-    movieName = cleanName;
+    movieName = trimAndLowerCase(cleanName);
     size_t firstDigit = ratingStr.find_first_not_of(" \t\r\n");
     if (firstDigit != string::npos) {
         char ch = ratingStr[firstDigit];
