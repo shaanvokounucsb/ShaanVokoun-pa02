@@ -17,8 +17,8 @@ string trimAndLowercase(const string& str) {
 
         if (ch == ' ' || ch == '/t'){
             if (!lastWasSpace){
-                result += '';
-                lastWasSpace = true
+                result += ' ';
+                lastWasSpace = true;
             }
             else {
                 result += ch;
