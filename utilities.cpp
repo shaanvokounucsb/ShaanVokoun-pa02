@@ -20,10 +20,10 @@ string trimAndLowercase(const string& str) {
                 result += ' ';
                 lastWasSpace = true;
             }
-            else {
+        }
+        else {
                 result += ch;
                 lastWasSpace = false;
-            }
         }
         
     }
