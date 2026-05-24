@@ -95,7 +95,7 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
     }
     string cleanName = "";
     for (size_t i = 0; i < movieName.length(); ++i) {
-        if (movieName[i] != ":"){
+        if (movieName[i] != ':'){
             cleanName += movieName[i];
         }
     }
