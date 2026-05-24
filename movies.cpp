@@ -1,22 +1,9 @@
 #include "movies.h"
+#include "utilities.h"
 #include <iostream>
 #include <iomanip>
 
 using namespace std;
-
-string MovieManager::trimAndLowercase(const string& str) {
-    size_t first = str.find_first_not_of(" \t\r\n");
-    if (string::npos == first) return "";
-    size_t last = str.find_last_not_of(" \t\r\n");
-    string trimmed = str.substr(first, (last - first + 1));
-    
-    for (size_t i = 0; i < trimmed.length(); ++i) {
-        if (trimmed[i] >= 'A' && trimmed[i] <= 'Z') {
-            trimmed[i] = trimmed[i] + 32;
-        }
-    }
-    return trimmed;
-}
 
 void MovieManager::insertMovie(const string& name, double rating) {
     Movie movie;
@@ -48,7 +35,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
     vector<MovieTracker> summaryList;
 
     for (const auto& rawPrefix : rawPrefixes) {
-        string prefix = trimAndLowercase(rawPrefix);
+        string prefix = cleanPrefixOnly(rawPrefix);
         if (prefix.empty()) continue;
 
         vector<Movie> matches;
