@@ -10,14 +10,7 @@ string trimAndLowercase(const string& str) {
     size_t first = str.find_first_not_of(" \t\r\n");
     if (string::npos == first) return "";
     size_t last = str.find_last_not_of(" \t\r\n");
-    
-    string trimmed = str.substr(first, (last - first + 1));
-    
-    for (char &c : trimmed) {
-        c = tolower((unsigned char)c);
-    }
-    
-    return trimmed;
+    return str.substr(first, (last - first + 1));
 }
 
 string cleanPrefixOnly(const string& str) {
