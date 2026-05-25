@@ -17,12 +17,8 @@ bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     string titleA = a.title;
     string titleB = b.title;
 
-    for (size_t k = 0; k < titleA.length(); ++k) {
-        if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
-    }
-    for (size_t k = 0; k < titleB.length(); ++k) {
-        if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
-    }
+    for (char &c : titleA) c = tolower((unsigned char)c);
+    for (char &c : titleB) c = tolower((unsigned char)c);
 
     return titleA < titleB;
 }
