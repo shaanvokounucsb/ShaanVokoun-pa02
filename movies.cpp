@@ -16,15 +16,15 @@ void MovieManager::printAllAlphabetically() {
     if (movieRecords.empty()) return;
 
     for (size_t i = 0; i < movieRecords.size(); ++i) {
-        for (size_t j = 0; j < n-i-1; ++j) {
+        for (size_t j = 0; j < movieRecords.size()-i-1; ++j) {
             string titleA = movieRecords[j].title;
             string titleB = movieRecords[j+1].title;
             for (size_t k = 0; k < titleA.length(); ++k) if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
             for (size_t k = 0; k < titleB.length(); ++k) if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
             if (titleA> titleB) {
-                Movie temp = titleA;
-                titleA = titleB;
-                titleB = temp;
+                Movie temp = movieRecords[j];
+                movieRecords[j] = movieRecords[j+1];
+                movieRecords[j+1] = temp;
             }
         }
     
