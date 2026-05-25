@@ -16,18 +16,24 @@ void MovieManager::printAllAlphabetically() {
     if (movieRecords.empty()) return;
 
     for (size_t i = 0; i < movieRecords.size(); ++i) {
-        for (size_t j = 0; j < movieRecords.size()-i-1; ++j) {
+        for (size_t j = 0; j < movieRecords.size() - i - 1; ++j) {
             string titleA = movieRecords[j].title;
-            string titleB = movieRecords[j+1].title;
-            for (size_t k = 0; k < titleA.length(); ++k) if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
-            for (size_t k = 0; k < titleB.length(); ++k) if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
-            if (titleA> titleB) {
+            string titleB = movieRecords[j + 1].title;
+            
+            for (size_t k = 0; k < titleA.length(); ++k) {
+                if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
+            }
+            for (size_t k = 0; k < titleB.length(); ++k) {
+                if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
+            }
+            
+            if (titleA > titleB) {
                 Movie temp = movieRecords[j];
-                movieRecords[j] = movieRecords[j+1];
-                movieRecords[j+1] = temp;
+                movieRecords[j] = movieRecords[j + 1];
+                movieRecords[j + 1] = temp;
             }
         }
-    
+    } // <-- Added missing closing brace for outer loop
 
     for (const auto& movie : movieRecords) {
         cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
@@ -43,7 +49,15 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
 
         vector<Movie> matches;
         for (const auto& movie : movieRecords) {
-            if (movie.title.rfind(prefix, 0) == 0) {
+            // FIX: Generate a lowercase copy of the movie title purely for comparison
+            string lowerTitle = movie.title;
+            for (size_t i = 0; i < lowerTitle.length(); ++i) {
+                if (lowerTitle[i] >= 'A' && lowerTitle[i] <= 'Z') {
+                    lowerTitle[i] = lowerTitle[i] + 32;
+                }
+            }
+
+            if (lowerTitle.rfind(prefix, 0) == 0) {
                 matches.push_back(movie);
             }
         }
