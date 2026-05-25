@@ -15,16 +15,19 @@ void MovieManager::insertMovie(const string& name, double rating) {
 void MovieManager::printAllAlphabetically() {
     if (movieRecords.empty()) return;
 
-    size_t n = movieRecords.size();
-    for (size_t i = 0; i < n - 1; ++i) {
-        for (size_t j = 0; j < n - i - 1; ++j) {
-            if (movieRecords[j].title > movieRecords[j + 1].title) {
-                Movie temp = movieRecords[j];
-                movieRecords[j] = movieRecords[j + 1];
-                movieRecords[j + 1] = temp;
+    for (size_t i = 0; i < movieRecords.size(); ++i) {
+        for (size_t j = 0; j < n-i-1; ++j) {
+            string titleA = movieRecords[j].title;
+            string titleB = movieRecords[j+1].title;
+            for (size_t k = 0; k < titleA.length(); ++k) if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
+            for (size_t k = 0; k < titleB.length(); ++k) if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
+            if (titleA> titleB) {
+                Movie temp = titleA;
+                titleA = titleB;
+                titleB = temp;
             }
         }
-    }
+    
 
     for (const auto& movie : movieRecords) {
         cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
