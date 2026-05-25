@@ -2,7 +2,7 @@
 #include "utilities.h"
 #include <iostream>
 #include <iomanip>
-#include <algorithm>
+#include <algorithm> 
 
 using namespace std;
 
@@ -12,7 +12,8 @@ void MovieManager::insertMovie(const string& name, double rating) {
     movie.rating = rating;
     movieRecords.push_back(movie);
 }
-bool CaseComparer(const Movie& a, const Movie& b) {
+
+bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     string titleA = a.title;
     string titleB = b.title;
 
@@ -27,8 +28,9 @@ bool CaseComparer(const Movie& a, const Movie& b) {
 }
 
 void MovieManager::printAllAlphabetically() {
+    if (movieRecords.empty()) return;
 
-    sort(movieRecords.begin(), movieRecords.end(), CaseComparer)
+    sort(movieRecords.begin(), movieRecords.end(), compareMoviesCaseInsensitive);
 
     for (const auto& movie : movieRecords) {
         cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
@@ -44,7 +46,6 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
 
         vector<Movie> matches;
         for (const auto& movie : movieRecords) {
-            // FIX: Generate a lowercase copy of the movie title purely for comparison
             string lowerTitle = movie.title;
             for (size_t i = 0; i < lowerTitle.length(); ++i) {
                 if (lowerTitle[i] >= 'A' && lowerTitle[i] <= 'Z') {
@@ -74,7 +75,17 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
                 if (matches[j].rating < matches[j + 1].rating) {
                     swapRequired = true;
                 } else if (matches[j].rating == matches[j + 1].rating) {
-                    if (matches[j].title > matches[j + 1].title) {
+                    string tieA = matches[j].title;
+                    string tieB = matches[j + 1].title;
+                    
+                    for (size_t k = 0; k < tieA.length(); ++k) {
+                        if (tieA[k] >= 'A' && tieA[k] <= 'Z') tieA[k] += 32;
+                    }
+                    for (size_t k = 0; k < tieB.length(); ++k) {
+                        if (tieB[k] >= 'A' && tieB[k] <= 'Z') tieB[k] += 32;
+                    }
+
+                    if (tieA > tieB) {
                         swapRequired = true;
                     }
                 }
