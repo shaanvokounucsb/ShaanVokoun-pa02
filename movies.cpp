@@ -20,9 +20,20 @@ bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     for (char &c : titleA) c = tolower((unsigned char)c);
     for (char &c : titleB) c = tolower((unsigned char)c);
 
-    if (titleA == titleB) {
-        return a.title < b.title;
+    return titleA < titleB;
+}
+
+bool comparePrefixMatches(const Movie& a, const Movie& b) {
+    if (a.rating != b.rating) {
+        return a.rating > b.rating;
     }
+
+    // 2. Secondary Sort: Title Alphabetical Case-Insensitive Ascending
+    string titleA = a.title;
+    string titleB = b.title;
+    for (char &c : titleA) c = tolower((unsigned char)c);
+    for (char &c : titleB) c = tolower((unsigned char)c);
+
     return titleA < titleB;
 }
 
@@ -65,31 +76,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
             continue;
         }
 
-        size_t n = matches.size();
-        for (size_t i = 0; i < n - 1; ++i) {
-            for (size_t j = 0; j < n - i - 1; ++j) {
-                bool swapRequired = false;
-                if (matches[j].rating < matches[j + 1].rating) {
-                    swapRequired = true;
-                } else if (matches[j].rating == matches[j + 1].rating) {
-                    string tieA = matches[j].title;
-                    string tieB = matches[j + 1].title;
-                    
-                    for (char &c : tieA) c = tolower((unsigned char)c);
-                    for (char &c : tieB) c = tolower((unsigned char)c);
-
-                    if (tieA > tieB) {
-                        swapRequired = true;
-                    } 
-                }
-
-                if (swapRequired) {
-                    Movie temp = matches[j];
-                    matches[j] = matches[j + 1];
-                    matches[j + 1] = temp;
-                }
-            }
-        }
+        stable_sort(matches.begin(), matches.end(), comparePrefixMatches);
 
         for (const auto& movie : matches) {
             cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
