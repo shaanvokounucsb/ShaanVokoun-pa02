@@ -9,34 +9,28 @@ using namespace std;
 void MovieManager::insertMovie(const string& name, double rating) {
     Movie movie;
     movie.title = name; 
+    
+
+    string lower = name;
+    for (char &c : lower) c = tolower((unsigned char)c);
+    movie.lowercaseTitle = lower;
+    
     movie.rating = rating;
     movieRecords.push_back(movie);
 }
 
 bool compareMoviesAlphabetically(const Movie& a, const Movie& b) {
-    string titleA = a.title;
-    string titleB = b.title;
-
-    for (char &c : titleA) c = tolower((unsigned char)c);
-    for (char &c : titleB) c = tolower((unsigned char)c);
-
-    if (titleA == titleB) {
+    if (a.lowercaseTitle == b.lowercaseTitle) {
         return a.title < b.title;
     }
-    return titleA < titleB;
+    return a.lowercaseTitle < b.lowercaseTitle;
 }
 
 bool comparePrefixMatches(const Movie& a, const Movie& b) {
     if (a.rating != b.rating) {
         return a.rating > b.rating;
     }
-    
-    string titleA = a.title;
-    string titleB = b.title;
-    for (char &c : titleA) c = tolower((unsigned char)c);
-    for (char &c : titleB) c = tolower((unsigned char)c);
-
-    return titleA < titleB;
+    return a.lowercaseTitle < b.lowercaseTitle;
 }
 
 void MovieManager::printAllAlphabetically() {
@@ -58,10 +52,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
 
         vector<Movie> matches;
         for (const auto& movie : movieRecords) {
-            string lowerTitle = movie.title;
-            for (char &c : lowerTitle) c = tolower((unsigned char)c);
-
-            if (lowerTitle.rfind(prefix, 0) == 0) {
+            if (movie.lowercaseTitle.rfind(prefix, 0) == 0) {
                 matches.push_back(movie);
             }
         }
