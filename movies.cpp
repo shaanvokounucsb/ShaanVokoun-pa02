@@ -80,11 +80,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
 
                     if (tieA > tieB) {
                         swapRequired = true;
-                    } else if (tieA == tieB) {
-                        if (matches[j].title > matches[j + 1].title) {
-                            swapRequired = true;
-                        }
-                    }
+                    } 
                 }
 
                 if (swapRequired) {
