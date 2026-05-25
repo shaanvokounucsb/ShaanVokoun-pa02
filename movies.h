@@ -8,7 +8,7 @@ using namespace std;
 
 struct Movie {
     string title;
-    string lowerCaseTitle;
+    string lowercaseTitle;
     double rating;
 };
 
