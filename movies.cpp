@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -11,29 +12,23 @@ void MovieManager::insertMovie(const string& name, double rating) {
     movie.rating = rating;
     movieRecords.push_back(movie);
 }
+bool CaseComparer(const Movie& a, const Movie& b) {
+    string titleA = a.title;
+    string titleB = b.title;
+
+    for (size_t k = 0; k < titleA.length(); ++k) {
+        if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
+    }
+    for (size_t k = 0; k < titleB.length(); ++k) {
+        if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
+    }
+
+    return titleA < titleB;
+}
 
 void MovieManager::printAllAlphabetically() {
-    if (movieRecords.empty()) return;
 
-    for (size_t i = 0; i < movieRecords.size(); ++i) {
-        for (size_t j = 0; j < movieRecords.size() - i - 1; ++j) {
-            string titleA = movieRecords[j].title;
-            string titleB = movieRecords[j + 1].title;
-            
-            for (size_t k = 0; k < titleA.length(); ++k) {
-                if (titleA[k] >= 'A' && titleA[k] <= 'Z') titleA[k] += 32;
-            }
-            for (size_t k = 0; k < titleB.length(); ++k) {
-                if (titleB[k] >= 'A' && titleB[k] <= 'Z') titleB[k] += 32;
-            }
-            
-            if (titleA > titleB) {
-                Movie temp = movieRecords[j];
-                movieRecords[j] = movieRecords[j + 1];
-                movieRecords[j + 1] = temp;
-            }
-        }
-    } // <-- Added missing closing brace for outer loop
+    sort(movieRecords.begin(), movieRecords.end(), CaseComparer)
 
     for (const auto& movie : movieRecords) {
         cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
