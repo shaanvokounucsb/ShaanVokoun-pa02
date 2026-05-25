@@ -12,6 +12,7 @@ void MovieManager::insertMovie(const string& name, double rating) {
     movie.rating = rating;
     movieRecords.push_back(movie);
 }
+
 bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     string titleA = a.title;
     string titleB = b.title;
@@ -20,13 +21,14 @@ bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     for (char &c : titleB) c = tolower((unsigned char)c);
 
     if (titleA == titleB) {
-        return a.title < b.title; 
+        return a.title < b.title;
     }
     return titleA < titleB;
 }
 
 void MovieManager::printAllAlphabetically() {
     if (movieRecords.empty()) return;
+
     stable_sort(movieRecords.begin(), movieRecords.end(), compareMoviesCaseInsensitive);
 
     for (const auto& movie : movieRecords) {
@@ -45,9 +47,7 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
         for (const auto& movie : movieRecords) {
             string lowerTitle = movie.title;
             for (size_t i = 0; i < lowerTitle.length(); ++i) {
-                if (lowerTitle[i] >= 'A' && lowerTitle[i] <= 'Z') {
-                    lowerTitle[i] = lowerTitle[i] + 32;
-                }
+                lowerTitle[i] = tolower((unsigned char)lowerTitle[i]);
             }
 
             if (lowerTitle.rfind(prefix, 0) == 0) {
