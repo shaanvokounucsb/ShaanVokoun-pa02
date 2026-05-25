@@ -8,26 +8,8 @@ string trimAndLowercase(const string& str) {
     if (string::npos == first) return "";
     size_t last = str.find_last_not_of(" \t\r\n");
     string trimmed = str.substr(first, (last - first + 1));
-    
-    string result = "";
-    bool lastWasSpace = false;
 
-    for (size_t i = 0; i < trimmed.length(); ++i) {
-        char ch = trimmed[i];
-
-        if (ch == ' ' || ch == '\t'){
-            if (!lastWasSpace){
-                result += ' ';
-                lastWasSpace = true;
-            }
-        }
-        else {
-                result += ch;
-                lastWasSpace = false;
-        }
-        
-    }
-    return result;
+    return trimmed;
 }
 
 string cleanPrefixOnly(const string& str) {
