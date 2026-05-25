@@ -12,7 +12,6 @@ void MovieManager::insertMovie(const string& name, double rating) {
     movie.rating = rating;
     movieRecords.push_back(movie);
 }
-
 bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     string titleA = a.title;
     string titleB = b.title;
@@ -20,13 +19,15 @@ bool compareMoviesCaseInsensitive(const Movie& a, const Movie& b) {
     for (char &c : titleA) c = tolower((unsigned char)c);
     for (char &c : titleB) c = tolower((unsigned char)c);
 
+    if (titleA == titleB) {
+        return a.title < b.title; 
+    }
     return titleA < titleB;
 }
 
 void MovieManager::printAllAlphabetically() {
     if (movieRecords.empty()) return;
-
-    sort(movieRecords.begin(), movieRecords.end(), compareMoviesCaseInsensitive);
+    stable_sort(movieRecords.begin(), movieRecords.end(), compareMoviesCaseInsensitive);
 
     for (const auto& movie : movieRecords) {
         cout << movie.title << ", " << fixed << setprecision(1) << movie.rating << endl;
@@ -74,15 +75,15 @@ void MovieManager::processPrefixQueries(const vector<string>& rawPrefixes) {
                     string tieA = matches[j].title;
                     string tieB = matches[j + 1].title;
                     
-                    for (size_t k = 0; k < tieA.length(); ++k) {
-                        if (tieA[k] >= 'A' && tieA[k] <= 'Z') tieA[k] += 32;
-                    }
-                    for (size_t k = 0; k < tieB.length(); ++k) {
-                        if (tieB[k] >= 'A' && tieB[k] <= 'Z') tieB[k] += 32;
-                    }
+                    for (char &c : tieA) c = tolower((unsigned char)c);
+                    for (char &c : tieB) c = tolower((unsigned char)c);
 
                     if (tieA > tieB) {
                         swapRequired = true;
+                    } else if (tieA == tieB) {
+                        if (matches[j].title > matches[j + 1].title) {
+                            swapRequired = true;
+                        }
                     }
                 }
 
